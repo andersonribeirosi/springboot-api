@@ -2,6 +2,7 @@ package com.andersonribeiro.minhasfinancas.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.andersonribeiro.minhasfinancas.exceptions.RegraNegocioException;
 import com.andersonribeiro.minhasfinancas.model.entity.Usuario;
@@ -26,9 +27,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional // Elel vai criar(abrir) no BD uma transação, vai executar o método de salvar usuário e depois que salvar ele vai commitar 
 	public Usuario salvarUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		return null;
+		validarEmail(usuario.getEmail());
+		return repository.save(usuario);
 	}
 
 	@Override
