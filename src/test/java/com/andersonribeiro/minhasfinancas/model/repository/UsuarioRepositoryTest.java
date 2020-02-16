@@ -4,27 +4,36 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.andersonribeiro.minhasfinancas.model.entity.Usuario;
 
-@SpringBootTest
+//@SpringBootTest
 @RunWith(SpringRunner.class)
 //@ActiveProfiles("test") // Vai buscar o application-test-properties (h2 in memory)
+@DataJpaTest 
+// Cria uma instância do BD em mémoria, ao finalizar a bateria de testes, a encerra e deleta da memória
+// Assim não influenciando nos proximos testes a cada ciclo.
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+// Não altera as configurações no BD em memória (mantém as configs default pré-configuradas
 public class UsuarioRepositoryTest {
 
 	@Autowired
 	UsuarioRepository repository;
+	
+	@Autowired
+	TestEntityManager entityManager;
 
 	@Test
 	public void verificarEmail() {
 
 		// Cenário
 		Usuario usuario = Usuario.builder().nome("usuario").email("and@email.com").build();
-		repository.save(usuario);
+		entityManager.persist(usuario);
 
 		// açao / execução
 		boolean result = repository.existsByEmail("and@email.com");
@@ -36,9 +45,6 @@ public class UsuarioRepositoryTest {
 	@Test
 
 	public void deveRetornarFalsoQuandoNaoHouverUsuarioCadastradoComOEmail() {
-
-		// Cenário
-		repository.deleteAll();
 		
 		//ação / execução
 		boolean result = repository.existsByEmail("anderson@gmail.com");
