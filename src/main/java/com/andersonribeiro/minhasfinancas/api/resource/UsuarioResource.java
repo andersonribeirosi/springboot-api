@@ -15,7 +15,7 @@ import com.andersonribeiro.minhasfinancas.service.UsuarioService;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioResource {
-	
+		
 	private UsuarioService service;
 	
 	public UsuarioResource(UsuarioService service) {
