@@ -3,33 +3,51 @@ package com.andersonribeiro.minhasfinancas.service;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.andersonribeiro.minhasfinancas.exceptions.ErroAutenticacaoException;
 import com.andersonribeiro.minhasfinancas.exceptions.RegraNegocioException;
 import com.andersonribeiro.minhasfinancas.model.entity.Usuario;
 import com.andersonribeiro.minhasfinancas.model.repository.UsuarioRepository;
-import com.andersonribeiro.minhasfinancas.service.impl.UsuarioServiceImpl;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class UsuarioServiceTest {
 
+	@SpyBean
 	UsuarioService service;
 
-	@MockBean // Cria toda a instancia da linha 28
+	@MockBean
 	UsuarioRepository repository;
 
-	@Before
-	public void setUp() {
+//	@Before
+//	public void setUp() {
 //		repository = Mockito.mock(UsuarioRepository.class); 
-		service = new UsuarioServiceImpl(repository);
+//		service = new UsuarioServiceImpl(repository);
+//	}
+
+	@Test(expected = Test.None.class)
+	public void deveSalvarUmUsuario() {
+		// Cenário
+		Mockito.doNothing().when(service).validarEmail(Mockito.anyString());
+		Usuario usuario = Usuario.builder().id(1l).email("email@email.com").nome("nome").senha("senha").build();
+		Mockito.when(repository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
+
+		// Ação
+		Usuario usuarioSalvo = service.salvarUsuario(new Usuario());
+
+		// Verificação
+		Assertions.assertThat(usuarioSalvo).isNotNull();
+		Assertions.assertThat(usuarioSalvo.getId()).isEqualTo(1l);
+		Assertions.assertThat(usuarioSalvo.getNome()).isEqualTo("nome");
+		Assertions.assertThat(usuarioSalvo.getSenha()).isEqualTo("senha");
+		Assertions.assertThat(usuarioSalvo.getEmail()).isEqualTo("email@email.com");
 	}
 
 	@Test(expected = Test.None.class)
