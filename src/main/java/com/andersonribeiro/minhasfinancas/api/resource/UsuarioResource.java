@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andersonribeiro.minhasfinancas.api.dto.UsuarioDTO;
+import com.andersonribeiro.minhasfinancas.exceptions.ErroAutenticacaoException;
 import com.andersonribeiro.minhasfinancas.exceptions.RegraNegocioException;
 import com.andersonribeiro.minhasfinancas.model.entity.Usuario;
 import com.andersonribeiro.minhasfinancas.service.UsuarioService;
@@ -34,9 +35,22 @@ public class UsuarioResource {
 	try {
 		Usuario usuarioSalvo = service.salvarUsuario(usuario);
 		return new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);
+		
 	} catch (RegraNegocioException e) {
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}	
+	}
+	
+	@PostMapping("/autenticar")
+	public ResponseEntity autenticar(@RequestBody UsuarioDTO dto) {
+		try {
+			Usuario usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
+					
+		return ResponseEntity.ok(usuarioAutenticado);
+		
+		} catch (ErroAutenticacaoException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 }
