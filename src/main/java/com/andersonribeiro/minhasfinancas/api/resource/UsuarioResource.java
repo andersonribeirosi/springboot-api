@@ -13,15 +13,14 @@ import com.andersonribeiro.minhasfinancas.exceptions.RegraNegocioException;
 import com.andersonribeiro.minhasfinancas.model.entity.Usuario;
 import com.andersonribeiro.minhasfinancas.service.UsuarioService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/usuarios")
+@RequiredArgsConstructor
 public class UsuarioResource {
 		
-	private UsuarioService service;
-	
-	public UsuarioResource(UsuarioService service) {
-		this.service = service;
-	}
+	private final UsuarioService service;
 	
 	//@ResposeEntity - Representa o corpo da resposta
 	//@RequestBody - Retorna apenas o que contem no DTO
