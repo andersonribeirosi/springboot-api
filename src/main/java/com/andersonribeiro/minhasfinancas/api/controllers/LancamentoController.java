@@ -1,4 +1,4 @@
-package com.andersonribeiro.minhasfinancas.api.resource;
+package com.andersonribeiro.minhasfinancas.api.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/lancamentos")
 @RequiredArgsConstructor
-public class LancamentoResource {
+public class LancamentoController {
 
 	private final LancamentoService service;
 	private final UsuarioService usuarioService;
@@ -71,7 +71,8 @@ public class LancamentoResource {
 	}
 
 	@GetMapping
-	public ResponseEntity buscar(@RequestParam(value = "descricao", required = false) String descricao,
+	public ResponseEntity buscar(
+			@RequestParam(value = "descricao", required = false) String descricao,
 			@RequestParam(value = "mes", required = false) Integer mes,
 			@RequestParam(value = "ano", required = false) Integer ano,
 			@RequestParam(value = "usuario") Long idUsuario) {

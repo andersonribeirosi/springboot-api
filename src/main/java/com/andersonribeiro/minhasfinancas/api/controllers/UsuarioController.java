@@ -1,4 +1,4 @@
-package com.andersonribeiro.minhasfinancas.api.resource;
+package com.andersonribeiro.minhasfinancas.api.controllers;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
-public class UsuarioResource {
+public class UsuarioController {
 
 	private final UsuarioService service;
 	private final LancamentoService lancamentoservice;
