@@ -30,7 +30,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Override
 	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
-		validar(lancamento);
+		validarCampos(lancamento);
 		lancamento.setStatus(StatusLancamento.PENDENTE);
 		return repository.save(lancamento);
 	}
@@ -39,7 +39,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Transactional
 	public Lancamento atualizar(Lancamento lancamento) {
 		Objects.requireNonNull(lancamento.getId());
-		validar(lancamento);
+		validarCampos(lancamento);
 		return repository.save(lancamento);
 	}
 
@@ -65,7 +65,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 	}
 
 	@Override
-	public void validar(Lancamento lancamento) {
+	public void validarCampos(Lancamento lancamento) {
 
 		if (lancamento.getDescricao() == null || lancamento.getDescricao().trim().equals("")) {
 			throw new RegraNegocioException("Informe uma Descrição válida");
@@ -100,9 +100,9 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Override
 	@Transactional(readOnly = true)
 	public BigDecimal obterSaldoPorTipoEusuario(Long id) {
-		BigDecimal receitas = repository.obterSaldoPorTipoEusuario(id, TipoLancamento.RECEITA); // name converte
+		BigDecimal receitas = repository.obterSaldoPorTipoEusuarioEStatus(id, TipoLancamento.RECEITA, StatusLancamento.EFETIVADO); // name converte
 																										// para string
-		BigDecimal despesas = repository.obterSaldoPorTipoEusuario(id, TipoLancamento.DESPESA); // name converte
+		BigDecimal despesas = repository.obterSaldoPorTipoEusuarioEStatus(id, TipoLancamento.DESPESA, StatusLancamento.EFETIVADO); // name converte
 																										// para string
 
 		if (receitas == null) {

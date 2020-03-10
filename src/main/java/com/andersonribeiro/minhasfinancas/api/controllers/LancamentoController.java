@@ -3,7 +3,7 @@ package com.andersonribeiro.minhasfinancas.api.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Entity;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

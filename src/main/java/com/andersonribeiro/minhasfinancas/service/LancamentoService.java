@@ -19,7 +19,7 @@ public interface LancamentoService {
 	
 	void atualizarStatus(Lancamento lancamento, StatusLancamento status);
 	
-	void validar(Lancamento lancamento);
+	void validarCampos(Lancamento lancamento);
 	
 	Optional<Lancamento> obterPorId(Long id);
 	
